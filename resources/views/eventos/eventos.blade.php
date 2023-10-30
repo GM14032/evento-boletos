@@ -490,5 +490,10 @@ function mensajeExito(titulo, texto){
         timer: 3000 // Duración en milisegundos
     });
 }
+
+function reservaciones(idEventos){
+    //abrir una nueva pestana
+    window.open("eventos.detalleEvento?id=" + idEventos, "_blank");
+}
 </script>
 @endsection

@@ -5,6 +5,7 @@ use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\UsuarioController;
 use App\Http\Controllers\EventoController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\AsientoController;
 
 Route::get('/register', [RegisterController::class, 'showRegistrationForm'])->name('register');
 Route::post('/register', [RegisterController::class, 'store']);
@@ -29,3 +30,6 @@ Route::post('mostrar_zonas_formato', [EventoController::class, 'mostrarZonasForm
 Route::post('mostrar_zonas_agregadas', [EventoController::class, 'mostrarZonasFormatosAgregadas'])->name('mostrar_zonas_agregadas');
 Route::post('eliminar_evento_zona', [EventoController::class, 'eliminarEventoZona'])->name('eliminar_evento_zona');
 Route::post('deshabilitar_evento', [EventoController::class, 'deshabilitarEvento'])->name('deshabilitar_evento');
+Route::post('cargar_asientos_vip', [AsientoController::class, 'cargarAsientos'])->name('cargar_asientos_vip');
+Route::post('obtener_nombre_evento', [EventoController::class, 'obtener_nombre_evento'])->name('obtener_nombre_evento');
+Route::post('obtener_estados_asientos', [EventoController::class, 'obtenerEstadoAsientos'])->name('obtener_estados_asientos');

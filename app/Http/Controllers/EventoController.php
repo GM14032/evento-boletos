@@ -28,7 +28,8 @@ class EventoController extends Controller
         INNER JOIN formato f on e.id_formato = f.id"))
             ->addColumn('action', function($row){
                 $button = '<button type="button" name="edit" onclick="editarEvento('.$row->id.', \''.$row->evento.'\', \''.$row->fecha.'\', \''.$row->id_formato.'\')"  class="edit btn btn-primary" title="Editar"><i class="mdi mdi-pencil"></i></button>';
-                $button .= '&nbsp;&nbsp;&nbsp;<button type="button" name="delete" onclick=deshabilitarEvento("'.$row->id.'") class="delete btn btn-danger" title="Deshabilitar"><i class="mdi mdi-toggle-switch-off"></i></button>';
+                $button .= '&nbsp;&nbsp;&nbsp;<button type="button" name="delete" onclick=deshabilitarEvento("'.$row->id.'") class="delete btn btn-danger" title="Deshabilitar"><i class="mdi mdi-toggle-switch-off"></i></button>
+                &nbsp;&nbsp;&nbsp;<button type="button" name="reservaciones" onclick=reservaciones("'.$row->id.'") class="delete btn btn-info" title="Reservaciones"><i class="mdi mdi-table-eye"></i></button>';
                 return $button;
             })
             ->rawColumns(['action'])->addIndexColumn()->make(true);
@@ -113,28 +114,28 @@ class EventoController extends Controller
 
     public function mostrarZonasFormatos(Request $request){
         $idFormato = $request->id_formato;
-        return response()->json(DB::select("select z.id as idz,z.nombre,zf.id as idzf from formato
-            inner join zona_formato zf on formato.id = zf.id_formato
-            inner join zonas z on zf.id_zona = z.id
-            where formato.id = $idFormato"));
+        return response()->json(DB::select("SELECT z.id as idz,z.nombre,zf.id as idzf from formato
+            INNER JOIN zona_formato zf on formato.id = zf.id_formato
+            INNER JOIN zonas z on zf.id_zona = z.id
+            WHERE formato.id = $idFormato"));
     }
 
     public function mostrarZonasFormatosAgregadas(Request $request){
         $idFormato = $request->id_formato;
         $idEvento = $request->id_evento;
-        return response()->json(DB::select("select
-            z.id as idz,
+        return response()->json(DB::select("SELECT
+            z.id AS idz,
             z.nombre,
-            #ez.precio,
-            (select precio from evento_zona where id_evento=$idEvento and id_zona = z.id) as precio
-            #ez.id as id_evento_zona
-        from zonas z
-        left join zona_formato zf on z.id = zf.id_zona
-        where zf.id_formato=$idFormato"));
+            (SELECT precio FROM evento_zona WHERE id_evento=$idEvento AND id_zona = z.id) AS precio,
+            (SELECT id FROM evento_zona WHERE id_evento=1 AND id_zona = z.id) AS id_evento_zona
+        FROM zonas z
+        LEFT JOIN zona_formato zf ON z.id = zf.id_zona
+        WHERE zf.id_formato=$idFormato"));
     }
 
     public function eliminarEventoZona(Request $request){
         $id = $request->id_evento_zona;
+        // exit($id . " Eliminar");
         EventoZona::where('id', $id)->delete();
         return response()->json($id);
     }
@@ -143,5 +144,30 @@ class EventoController extends Controller
         $id = $request->id_evento;
         Evento::where('id', $id)->update(['estado' => 0]);
         return response()->json($id);
+    }
+
+    public function detalleAsientosEvento(Request $request){
+        $id = $request->id_evento;
+        //mostrar la vista en la ruta resources\views\eventos\detalleEvento.blade.php
+        return view('views.eventos.detalleEvento', compact('id'));
+    }
+
+    public function obtener_nombre_evento(Request $request){
+        $id = $request->id;
+        $evento = Evento::find($id);
+        return response()->json($evento);
+    }
+
+    public function obtenerEstadoAsientos(Request $request){
+        $id_evento = $request->id_evento;
+        return response()->json(DB::select("SELECT
+                asientos.numero,
+                bol.leido,
+                bol.reservado
+            from asientos
+            inner join boleto bol on asientos.id = bol.id_asiento
+            inner join evento_zona ez on bol.id_evento_zona = ez.id
+            inner join evento e on ez.id_evento = e.id
+            where e.id=$id_evento"));
     }
 }
