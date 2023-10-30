@@ -88,9 +88,7 @@
                                              aria-labelledby="v-pills-bill-info-tab">
                                             <div>
                                                 <h5>Elija sus asientos</h5>
-                                                <p class="text-muted">Fill all information below</p>
-                                            </div>
-
+                                                 </div>
                                             <div>
                                                 <div class="row g-3">
                                                     <div class="col-sm-6">
@@ -104,23 +102,8 @@
                                                         </select>
                                                     </div>
 
-                                                    <div class="col-sm-6">
-                                                        <label for="lastName" class="form-label">Numero de fila</label>
-                                                        <select class="form-select mb-3" aria-label="Default select example"
-                                                                name="fila">
-                                                            <option selected>Seleccione N° de asiento</option>
 
-                                                        </select>
-                                                    </div>
 
-                                                    <div class="col-sm-6">
-                                                        <label for="lastName" class="form-label">Numero asiento</label>
-                                                        <select class="form-select mb-3" aria-label="Default select example"
-                                                                name="asiento">
-                                                            <option selected>Seleccione N° de asiento</option>
-
-                                                        </select>
-                                                    </div>
                                                     <div class="col-sm-6">
                                                         <label for="lastName" class="form-label">Cantidad</label>
                                                         <input type="number" class="form-control" id="cantidad"
@@ -358,48 +341,5 @@
     <script src="{{ URL::asset('build/js/pages/apps-nft-explore.init.js') }}"></script>
 
     <script src="{{ URL::asset('build/js/app.js') }}"></script>
-    <script type="text/javascript">
-        $(document).ready(function() {
-            $('select[name="zona"]').on('change', function() {
-                var zonaId = $(this).val();
-                if (zonaId) {
-                    $.get('/filas/' + zonaId, function(data) {
-                        $('select[name="fila"]').empty();
-                        $('select[name="fila"]').append('<option value="">Seleccione la fila</option>');
 
-                        $.each(data, function(index, subzona) {
-                            var id= subzona.id_evento_zona + "-" + subzona.fila;
-                            $('select[name="fila"]').append('<option value="' + id+'">' +"Fila: "+ subzona.fila + '</option>');
-                        });
-                    })  .fail(function(jqXHR, textStatus, errorThrown) {
-                        console.log('Error en la solicitud AJAX:', jqXHR.responseText);
-                    });
-
-                } else {
-                    $('select[name="fila"]').empty();
-                }
-            });
-        });
-        $(document).ready(function() {
-            $('select[name="fila"]').on('change', function() {
-                var zonaId = $(this).val();
-                var dataId = zonaId.split("-");
-                if (zonaId) {
-                    $.get('/asientos/' + dataId[0]+"/"+dataId[1], function(data) {
-
-                        $('select[name="asiento"]').empty();
-                        $('select[name="asiento"]').append('<option value="">Seleccione el asiento</option>');
-
-                        $.each(data, function(index, subzona) {
-                            $('select[name="asiento"]').append('<option value="' + subzona.id + '">' +"Asiento: "+ subzona.numero + '</option>');
-                        });
-                    }).fail(function(jqXHR, textStatus, errorThrown) {
-                        console.log('Error en la solicitud AJAX:', jqXHR.responseText);
-                    });
-                } else {
-                    $('select[name="asiento"]').empty();
-                }
-            });
-        });
-    </script>
 @endsection
