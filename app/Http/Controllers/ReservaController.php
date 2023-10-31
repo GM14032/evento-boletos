@@ -45,12 +45,13 @@ class ReservaController extends Controller
         return response()->json($asiento);
     }
 
-    public function obtenerAsientosPorEventoYZona($idZona){
+    public function obtenerAsientosPorEventoYZona($idEvent, $idZona){
         $asientos = DB::table('boleto')
             ->join('asientos', 'boleto.id_asiento', '=', 'asientos.id')
             ->join('evento_zona', 'boleto.id_evento_zona', '=', 'evento_zona.id')
-            ->where('boleto.id_evento_zona', '=', $idZona)
-            ->select('asientos.*','boleto.id_evento_zona','boleto.reservado')
+            ->where('evento_zona.id_evento', '=', $idEvent)
+            ->where('evento_zona.id_zona', '=', $idZona)
+            ->select('asientos.*', 'evento_zona.precio', 'boleto.id','boleto.id_evento_zona','boleto.reservado')
             ->get();
         return response()->json($asientos);
     }

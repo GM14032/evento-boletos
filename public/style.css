@@ -22,11 +22,18 @@
     gap: 2px;
 }
 
-.seat {
+.seat,
+.selected-other-user {
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    border-radius: 50%;
+    width: 15px;
+    height: 15px;
+    overflow: hidden;
+    background-color: #fff;
+    border: 1px solid #ccc;
 }
 
 .seat:hover {
@@ -44,9 +51,5 @@
 }
 
 .selected-other-user {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    background-color: yellow;
+    background-color: red;
 }

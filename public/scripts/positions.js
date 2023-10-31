@@ -1,5 +1,15 @@
-const getZone = async (event, fillRight = false) => {
-    const response = await fetch(`/asiento-evento/${event.id}`);
+const createIndexedObject = (seats) => {
+    const simpleGraph = seats.reduce((acc, data) => {
+        return {
+            ...acc,
+            [`${data.fila}-${data.numero}`]: data,
+        };
+    }, {});
+    return simpleGraph;
+};
+
+const getZone = async (idEvent, idZone, fillRight = false) => {
+    const response = await fetch(`/asiento-evento/${idEvent}/${idZone}`);
     /**
      * fila: 1
      * id: 1
@@ -9,6 +19,7 @@ const getZone = async (event, fillRight = false) => {
      * reservado: 0
      */
     const data = await response.json();
+    const indexed = createIndexedObject(data);
     // reduce with the follow format { [fila]: [{id, numero, reservado }]}
     const seats = data.reduce((acc, { fila, id, numero, reservado }) => {
         if (!acc[fila]) {
@@ -46,5 +57,5 @@ const getZone = async (event, fillRight = false) => {
             ],
         };
     }, {});
-    return seatsFilled;
+    return { seats: seatsFilled, maxSeats, indexed };
 };

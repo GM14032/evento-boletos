@@ -94,7 +94,7 @@
                                                     <div class="col-sm-6">
                                                         <label for="lastName" class="form-label">Zona</label>
                                                         <select class="form-select mb-3" aria-label="Default select example"
-                                                                name="zona">
+                                                                name="zona" onchange="onchangeLocation(event)" id="select-location-id">
                                                             <option selected>Seleccione la localidad</option>
                                                             @foreach($zonas as $zona)
                                                                 <option value="{{ $zona->id }}">{{ $zona->nombre }} - ${{$zona->precio}}</option>
@@ -351,10 +351,21 @@
 
     <script>
         const zonas = @json($zonas);
-        const event = @json($event);
-        document.addEventListener("DOMContentLoaded", async () => {
-            const seats = await getZone(event);
-            displaySeats(seats);
-        });
+        const evento = @json($event);
+        const onchangeLocation = async (event) => {
+            const selectLocation = document.getElementById('select-location-id');
+            selectLocation.setAttribute('disabled', true);
+            if (event.target.value > 0){
+                const seats = await getZone(evento.id, event.target.value);
+                displaySeats(seats);
+            }else {
+                const seatsContainer = document.getElementById("ticket-position");
+                seatsContainer.querySelectorAll("#seats-container").forEach((node) => {
+                    node.remove();
+                });
+            }
+            // remove disabled
+            selectLocation.removeAttribute('disabled');
+        };
     </script>
 @endsection

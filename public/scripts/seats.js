@@ -1,25 +1,19 @@
-const selectedTables = {
-    "1-1": {
-        selected: "1-1",
-        selectedByMe: false,
-    },
-};
+const selectedTables = {};
 
-let rows = {};
+let indexedObj = {};
 
-const displaySeats = (seats) => {
+const displaySeats = ({ seats, maxSeats, indexed }) => {
     const seatsContainer = document.getElementById("ticket-position");
     if (!seatsContainer) return;
-    rows = Object.entries(seats).reduce(
-        (acc, [key, value]) => ({
-            ...acc,
-            [key]: value.map((data) => ({ ...data })),
-        }),
-        {}
-    );
+    indexedObj = indexed;
+    // remove all div with children with the id "seats-container"
+    seatsContainer.querySelectorAll("#seats-container").forEach((node) => {
+        node.remove();
+    });
     const container = document.createElement("div");
+    container.id = "seats-container";
     container.classList.add("seat-row");
-    container.style.setProperty("--repeat-value", "3");
+    container.style.setProperty("--repeat-value", `${maxSeats}`);
     // create a new div for each row
     Object.values(seats)
         .reverse()
@@ -31,11 +25,8 @@ const displaySeats = (seats) => {
                     seat.id = `${fila}-${numero}`;
                     seat.setAttribute("data-seat", fila);
                     seat.setAttribute("data-reserved", reservado);
-                    seat.innerText = numero;
-                    if (
-                        selectedTables[seat.id] &&
-                        !selectedTables[seat.id].selectedByMe
-                    ) {
+                    seat.innerText = "";
+                    if (reservado) {
                         seat.classList.add("selected-other-user");
                     } else {
                         seat.classList.add("seat");
@@ -51,40 +42,17 @@ const displaySeats = (seats) => {
     seatsContainer.appendChild(container);
 };
 
-const getPosition = (chairId = "") => {
-    const [row, column] = chairId.split("-");
-    if (!row || !column) {
-        return {};
-    }
-    return {
-        row,
-        column,
-    };
-};
-
 const selectTable = (table) => {
     const selected = document.getElementById(table);
     if (!selectedTables[table]) {
-        const { column, row } = getPosition(table);
-        if (!column || !row) {
-            console.error("No se pudo obtener la posición");
-            return;
-        }
-        const rowValue = rows[row];
-        if (!rowValue) {
-            console.error("No se pudo obtener la fila");
-            return;
-        }
-        const columnValue = rowValue.find(
-            (data) => data.numero === Number(column)
-        );
-        if (!columnValue) {
-            console.error("No se pudo obtener la columna");
+        const element = indexedObj[table];
+        if (!element) {
+            console.error("No se pudo obtener el eleemnto");
             return;
         }
         selectedTables[table] = {
             selected: table,
-            item: columnValue,
+            item: element,
             selectedByMe: true,
         };
         selected.classList.add("selected");
