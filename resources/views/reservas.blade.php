@@ -102,22 +102,23 @@
                                                         </select>
                                                     </div>
 
-
-
                                                     <div class="col-sm-6">
                                                         <label for="lastName" class="form-label">Cantidad</label>
                                                         <input type="number" class="form-control" id="cantidad"
                                                                placeholder="Cantidad"/>
                                                     </div>
-
                                                 </div>
                                             </div>
 
+                                            <div class="tickets-position" id="ticket-position">
+
+                                            </div>
                                             <div class="d-flex align-items-start gap-3 mt-4">
-                                                <button type="button"
+                                                <button onclick="saveElements()" type="button"
                                                         class="btn btn-success btn-label right ms-auto nexttab nexttab"
                                                         data-nexttab="v-pills-bill-address-tab"><i
-                                                        class="ri-arrow-right-line label-icon align-middle fs-16 ms-2"></i>Go
+                                                        class="ri-arrow-right-line label-icon align-middle fs-16 ms-2"
+                                                        ></i>Go
                                                     to Shipping
                                                 </button>
                                             </div>
@@ -345,4 +346,15 @@
 
     <script src="{{ URL::asset('build/js/app.js') }}"></script>
 	<script src="{{ URL::asset('scripts/reservas.js') }}"></script>
+	<script src="{{ URL::asset('scripts/positions.js') }}"></script>
+	<script src="{{ URL::asset('scripts/seats.js') }}"></script>
+
+    <script>
+        const zonas = @json($zonas);
+        const event = @json($event);
+        document.addEventListener("DOMContentLoaded", async () => {
+            const seats = await getZone(event);
+            displaySeats(seats);
+        });
+    </script>
 @endsection

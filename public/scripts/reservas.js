@@ -1,5 +1,3 @@
-console.log("reservas.js");
-
 const onChange = (className = "") => {
     const image = document.getElementById("location-element");
     const cart = document.getElementById("cart-element");

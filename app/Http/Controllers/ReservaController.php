@@ -10,11 +10,12 @@ class ReservaController extends Controller
 {
     public function index()
     {
-        $event = Evento::find(3);
+        $zonaId = 3;
+        $event = Evento::find($zonaId);
 
         $zonas = Evento::join('evento_zona', 'evento.id', '=', 'evento_zona.id_evento')
             ->join('zonas', 'evento_zona.id_zona', '=', 'zonas.id')
-            ->where('evento.id', '=', 3)
+            ->where('evento.id', '=', $zonaId)
             ->select('zonas.*', 'evento_zona.precio')
             ->get();
         return view('reservas', compact('event','zonas'));
@@ -42,6 +43,16 @@ class ReservaController extends Controller
             ->select('asientos.*','boleto.id_evento_zona','boleto.reservado')
             ->get();
         return response()->json($asiento);
+    }
+
+    public function obtenerAsientosPorEventoYZona($idZona){
+        $asientos = DB::table('boleto')
+            ->join('asientos', 'boleto.id_asiento', '=', 'asientos.id')
+            ->join('evento_zona', 'boleto.id_evento_zona', '=', 'evento_zona.id')
+            ->where('boleto.id_evento_zona', '=', $idZona)
+            ->select('asientos.*','boleto.id_evento_zona','boleto.reservado')
+            ->get();
+        return response()->json($asientos);
     }
 
 }
