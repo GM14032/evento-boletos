@@ -94,7 +94,7 @@
                                                     <div class="col-sm-6">
                                                         <label for="lastName" class="form-label">Zona</label>
                                                         <select class="form-select mb-3" aria-label="Default select example"
-                                                                name="zona" onchange="onchangeLocation(event)" id="select-location-id">
+                                                                name="zona" id="select-location-id">
                                                             <option selected>Seleccione la localidad</option>
                                                             @foreach($zonas as $zona)
                                                                 <option value="{{ $zona->id }}">{{ $zona->nombre }} - ${{$zona->precio}}</option>
@@ -110,11 +110,8 @@
                                                 </div>
                                             </div>
 
-                                            <div class="tickets-position" id="ticket-position">
-
-                                            </div>
                                             <div class="d-flex align-items-start gap-3 mt-4">
-                                                <button onclick="saveElements()" type="button"
+                                                <button type="button"
                                                         class="btn btn-success btn-label right ms-auto nexttab nexttab"
                                                         data-nexttab="v-pills-bill-address-tab"><i
                                                         class="ri-arrow-right-line label-icon align-middle fs-16 ms-2"
@@ -346,26 +343,4 @@
 
     <script src="{{ URL::asset('build/js/app.js') }}"></script>
 	<script src="{{ URL::asset('scripts/reservas.js') }}"></script>
-	<script src="{{ URL::asset('scripts/positions.js') }}"></script>
-	<script src="{{ URL::asset('scripts/seats.js') }}"></script>
-
-    <script>
-        const zonas = @json($zonas);
-        const evento = @json($event);
-        const onchangeLocation = async (event) => {
-            const selectLocation = document.getElementById('select-location-id');
-            selectLocation.setAttribute('disabled', true);
-            if (event.target.value > 0){
-                const seats = await getZone(evento.id, event.target.value);
-                displaySeats(seats);
-            }else {
-                const seatsContainer = document.getElementById("ticket-position");
-                seatsContainer.querySelectorAll("#seats-container").forEach((node) => {
-                    node.remove();
-                });
-            }
-            // remove disabled
-            selectLocation.removeAttribute('disabled');
-        };
-    </script>
 @endsection
