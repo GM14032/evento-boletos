@@ -3,7 +3,7 @@
     Dashboards
 @endsection
 @section('css')
-
+	<link href="{{ URL::asset('style.css') }}" rel="stylesheet" type="text/css" />
 @endsection
 @section('content')
     <div class="row">
@@ -302,7 +302,7 @@
                                 </div>
                             </div>
 
-                            <div class="col-lg-3">
+                            <div class="col-lg-3" id="cart-element" style="display:none;">
                                 <div class="d-flex justify-content-between align-items-center mb-3">
                                     <h5 class="fs-14 text-primary mb-0"><i
                                             class="ri-shopping-cart-fill align-middle me-2"></i> Tu carrito</h5>
@@ -323,6 +323,9 @@
                                     </li>
                                 </ul>
                             </div>
+							<div class="col-lg-3 image-location" id="location-element">
+								<img src="/images/location.jpeg" alt="location">
+                            </div>
                         </div>
                         <!-- end row -->
                     </form>
@@ -341,5 +344,5 @@
     <script src="{{ URL::asset('build/js/pages/apps-nft-explore.init.js') }}"></script>
 
     <script src="{{ URL::asset('build/js/app.js') }}"></script>
-
+	<script src="{{ URL::asset('scripts/reservas.js') }}"></script>
 @endsection
