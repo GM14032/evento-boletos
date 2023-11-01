@@ -112,6 +112,7 @@
                                                                 <th>#Boleto</th>
                                                                 <th>Zona</th>
                                                                 <th>Asiento</th>
+                                                                <th>Accion</th>
                                                             </tr>
                                                             </thead>
                                                             <tbody>
@@ -123,8 +124,9 @@
 
                                             <div class="d-flex align-items-start gap-3 mt-4">
                                                 <button type="button"
+                                                        onclick="guardarInformacion()"
                                                         class="btn btn-success btn-label right ms-auto nexttab nexttab"
-                                                        data-nexttab="v-pills-bill-address-tab"><i
+                                                        ><i
 
                                                         class="ri-arrow-right-line label-icon align-middle fs-16 ms-2"></i>Informacion del usuario
 
@@ -357,7 +359,8 @@
             const selectAsiento = document.querySelector("#select-asiento-id");
             const errorAsientos = document.querySelector("#error-asiento");
             const errorMaxAsientos = document.querySelector("#choose-seats");
-            const reservas = [];
+            const btnFirstStep = document.querySelector("#v-pills-bill-address-tab");
+            let reservas = [];
             const modal = new bootstrap.Modal(document.getElementById('myModal'));
 
             selectLocation.addEventListener("change", async () => {
@@ -467,11 +470,31 @@
                     const numero = fila.insertCell(0);
                     const zona = fila.insertCell(1);
                     const asiento = fila.insertCell(2);
+                    const accion = fila.insertCell(3);
+                    // document.create button
+                    const button = document.createElement("button");
+                    button.textContent = "Eliminar";
+                    button.classList.add("btn", "btn-danger");
+                    button.addEventListener("click", () => {
+                        const currentReservas = reservas.filter((r) => r.boleto !== reserva.boleto);
+                        reservas = currentReservas;
+                        actualizarTabla();
+                    });
+                    accion.appendChild(button);
 
                     numero.innerHTML = reserva.boleto;
                     zona.innerHTML = reserva.zonaName;
                     asiento.innerHTML = `${reserva.fila}-${reserva.asiento}`;
                 }
+            }
+
+            function guardarInformacion(){
+                if (reservas.length === 0) {
+                    errorMaxAsientos.textContent = "Debe seleccionar al menos un asiento";
+                    return;
+                }
+                console.log(reservas);
+                btnFirstStep.click();
             }
         </script>
     <script src="{{ URL::asset('build/js/pages/form-wizard.init.js') }}"></script>
