@@ -162,6 +162,7 @@
                                                 </button>
                                                 <button type="button"
                                                         onclick="saveReserva()"
+                                                        id="btnGuardarReserva"
                                                         class="btn btn-success btn-label right ms-auto nexttab nexttab"
                                                         data-nexttab="v-pills-finish-tab"><i
                                                         class="ri-arrow-right-line label-icon align-middle fs-16 ms-2"></i>Go
@@ -260,6 +261,11 @@
             const errorMaxAsientos = document.querySelector("#choose-seats");
             const btnFirstStep = document.querySelector("#v-pills-bill-address-tab");
             let reservas = [];
+            // dui, telefono, email
+            const dui = document.querySelector("#dui");
+            const telefono = document.querySelector("#telefono");
+            const email = document.querySelector("#email");
+
             const modal = new bootstrap.Modal(document.getElementById('myModal'));
             const zonasJson = @json($zonas);
 
@@ -443,8 +449,52 @@
                 btnFirstStep.click();
                 updateCarrito();
             }
-            function saveReserva(){
-                console.log(reservas);
+            async function saveReserva(){
+                // disable btnGuardarReserva
+                document.getElementById("btnGuardarReserva").setAttribute("disabled", "disabled");
+                // get values of dui, telefono, email
+                const duiValue = dui.value;
+                const telefonoValue = telefono.value;
+                const emailValue = email.value;
+                // validate values
+                if (!duiValue || !telefonoValue || !emailValue) {
+                    return;
+                }
+                // validate reservas length
+                if (reservas.length === 0) {
+                    return;
+                }
+                // post request to save reserva
+                const bodyReserva = {
+                    dui: duiValue,
+                    telefono: telefonoValue,
+                    email: emailValue,
+                    reservas: reservas.map((reserva) => ({
+                        id_boleto: reserva.boleto,
+                        id_zona: reserva.zona,
+                        fila: reserva.fila,
+                        numero: reserva.asiento,
+                    })),
+                };
+                // post to the endpoint /create/reserva
+                try {
+                    const response = await fetch('/create/reserva', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify(bodyReserva),
+                    });
+                    const data = await response.json();
+                    console.log('Success:', data);
+                    // redirect to /reservas
+                    window.location.href = "/reservas";
+                } catch (error) {
+                    console.error('Error:', error);
+                }
+                // enable btnGuardarReserva
+                document.getElementById("btnGuardarReserva").removeAttribute("disabled");
+
             }
         </script>
     <script src="{{ URL::asset('build/js/pages/form-wizard.init.js') }}"></script>
