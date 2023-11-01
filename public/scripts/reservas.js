@@ -18,7 +18,6 @@ const onChange = (className = "") => {
 document.addEventListener("DOMContentLoaded", () => {
     const observerElement = document.getElementById("v-pills-bill-info-tab");
     if (!observerElement) return;
-    console.log("observerElement: ");
     onChange(observerElement.className);
 
     const observer = new MutationObserver((mutationsList) => {

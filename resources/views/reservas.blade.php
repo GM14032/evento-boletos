@@ -88,7 +88,8 @@
                                              aria-labelledby="v-pills-bill-info-tab">
                                             <div>
                                                 <h5>Elija sus asientos</h5>
-                                                 </div>
+                                                <span id="choose-seats" style="color:red;"></span>
+                                            </div>
                                             <div>
                                                 <div class="row g-3">
                                                     <div class="col-sm-6">
@@ -102,7 +103,7 @@
                                                     </div>
 
                                                     <div class="col-sm-6">
-                                                        <button type="button" class="btn btn-primary " data-bs-toggle="modal" data-bs-target="#myModal"  id="btnAgregarAsiento" disabled>Agregar asiento</button>
+                                                        <button onclick="showModal()" type="button" class="btn btn-primary " data-bs-target="#myModal"  id="btnAgregarAsiento" disabled>Agregar asiento</button>
                                                     </div>
                                                     <div class="col-sm-12">
                                                         <table id="alternative-pagination" class="table nowrap dt-responsive align-middle table-hover table-bordered" style="width:100%">
@@ -321,7 +322,7 @@
                                     <label for="lastName" class="form-label">Fila</label>
                                     <select class="form-select mb-3" aria-label="Default select example"
                                             name="fila" id="select-fila-id">
-                                        <option selected>Seleccione la fila</option>
+                                        <option value='' selected>Seleccione la fila</option>
 
                                     </select>
                                     </div>
@@ -329,11 +330,12 @@
                                             <label for="lastName" class="form-label">Asiento</label>
                                             <select class="form-select mb-3" aria-label="Default select example"
                                                     name="asiento" id="select-asiento-id">
-                                                <option selected>Seleccione el asiento</option>
+                                                <option value='' selected>Seleccione el asiento</option>
 
                                             </select>
 
                                 </div>
+                                <span class="col-sm-9" style="color:red;" id="error-asiento"></span>
                                 </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
@@ -346,10 +348,15 @@
 
 @endsection
 @section('script')
-        <script>const selectLocation = document.querySelector("#select-location-id");
+        <script>
+            const MAX_ASIENTOS = 5;
+            const MODAL_OPTIONS = ['vip', 'platinum'];
+            const selectLocation = document.querySelector("#select-location-id");
             const btnAgregarAsiento = document.querySelector("#btnAgregarAsiento");
             const selectFila = document.querySelector("#select-fila-id");
             const selectAsiento = document.querySelector("#select-asiento-id");
+            const errorAsientos = document.querySelector("#error-asiento");
+            const errorMaxAsientos = document.querySelector("#choose-seats");
             const reservas = [];
             const modal = new bootstrap.Modal(document.getElementById('myModal'));
 
@@ -358,8 +365,13 @@
                     btnAgregarAsiento.removeAttribute("disabled");
                     const response = await fetch(`/filas/${selectLocation.value}`);
                     const data = await response.json();
-
-                    selectFila.innerHTML = "<option selected>Seleccione la fila</option>";
+                    // remove all options
+                    selectFila.innerHTML = "";
+                    const defaultOptions = document.createElement("option");
+                    defaultOptions.value = '';
+                    defaultOptions.text = 'Seleccione la fila';
+                    defaultOptions.selected=true;
+                    selectFila.appendChild(defaultOptions);
                     data.forEach((fila) => {
                         const option = document.createElement("option");
                         option.value = fila.fila;
@@ -373,12 +385,19 @@
 
             selectFila.addEventListener("change", async () => {
                 const filaSeleccionada = selectFila.value;
-                if (filaSeleccionada !== "Seleccione la fila") {
+                if (filaSeleccionada && filaSeleccionada !== "Seleccione la fila") {
                     const zonaSeleccionada = selectLocation.value;
                     const response = await fetch(`/asientos/${zonaSeleccionada}/${filaSeleccionada}`);
-                    const data = await response.json();
-
-                    selectAsiento.innerHTML = "<option selected>Seleccione el asiento</option>";
+                    const allSeats = await response.json();
+                    // solo los asientos que no estan en reservas
+                    const data = allSeats.filter((asiento) => !reservas.some((reserva) => +reserva.boleto === +asiento.id));
+                    // remove all options
+                    selectAsiento.innerHTML = "";
+                    const defaultOption = document.createElement("option");
+                    defaultOption.value = '';
+                    defaultOption.text = 'Seleccione el asiento';
+                    defaultOption.selected=true;
+                    selectAsiento.appendChild(defaultOption);
                     data.forEach((asiento) => {
                         const option = document.createElement("option");
                         option.value = asiento.id;
@@ -389,6 +408,11 @@
             });
 
             document.getElementById("modalButton").addEventListener("click", async () => {
+                if (!selectLocation.value || isNaN(selectLocation.value) || !selectFila.value || isNaN(selectFila.value) || !selectAsiento.value || isNaN(selectAsiento.value)) {
+                    errorAsientos.textContent = "Debe seleccionar fila y asiento";
+                    return;
+                }
+                errorAsientos.textContent = "";
                 const zona = selectLocation.options[selectLocation.selectedIndex];
                 const asiento = selectAsiento.options[selectAsiento.selectedIndex];
 
@@ -400,10 +424,39 @@
                     boleto: selectAsiento.value,
                 });
 
+
                 actualizarTabla();
                 modal.hide();
-                selectAsiento.innerHTML = "<option selected>Seleccione el asiento</option>";
+                selectAsiento.value = "";
             });
+
+            async function showModal(){
+                errorMaxAsientos.textContent = "";
+                if (reservas.length >= MAX_ASIENTOS) {
+                    errorMaxAsientos.textContent =`Solo puede reservar ${MAX_ASIENTOS} asientos`;
+                    return;
+                }
+                const option = selectLocation.options[selectLocation.selectedIndex];
+                if (!MODAL_OPTIONS.some((value) => option.innerHTML.toLowerCase().includes(value))) {
+                    btnAgregarAsiento.setAttribute("disabled", "disabled");
+                    const response = await fetch(`/asiento-evento/${selectLocation.value}`);
+                    const data = await response.json()
+                    const asientoSeleccionado = data.filter((asiento) => !reservas.some((reserva) => reserva.boleto === asiento.id))[0];
+                    if (asientoSeleccionado) {
+                        reservas.push({
+                            zona: selectLocation.value,
+                            zonaName: option.textContent,
+                            fila: asientoSeleccionado.fila,
+                            asiento: asientoSeleccionado.numero,
+                            boleto: asientoSeleccionado.id,
+                        });
+                        actualizarTabla();
+                    }
+                    btnAgregarAsiento.removeAttribute("disabled");
+                    return;
+                }
+                modal.show();
+            }
 
             function actualizarTabla() {
                 const tabla = document.getElementById("alternative-pagination").getElementsByTagName('tbody')[0];

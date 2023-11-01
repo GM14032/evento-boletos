@@ -20,7 +20,7 @@ Route::get('/reservas', [ReservaController::class, 'index'])->name('reservas');
 
 Route::get('/filas/{id}', [ReservaController::class, 'obtenerFila'])->name('filas');
 Route::get('/asientos/{id}/{fila}', [ReservaController::class, 'obtenerAsiento'])->name('asientos');
-Route::get('/asiento-evento/{idEvent}/{idZone}', [ReservaController::class, 'obtenerAsientosPorEventoYZona'])->name('asientosByZone');
+Route::get('/asiento-evento/{idZonaEvento}', [ReservaController::class, 'obtenerAsientoPorZona'])->name('asientosByZone');
 
 
 

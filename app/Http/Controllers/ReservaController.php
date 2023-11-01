@@ -88,12 +88,24 @@ class ReservaController extends Controller
             ->where('evento_zona.id', '=', $idZona)
             ->where('boleto.reservado', '=', 0)
             ->where('asientos.fila', '=', $fila)
-            ->select('asientos.numero','asientos.id')
+            ->select('asientos.numero', 'asientos.id')
             ->distinct()
             ->get();
         return response()->json($asientos);
     }
     public function guardarReserva(Request $request){
 
+    }
+
+    public function obtenerAsientoPorZona($idZonaEvento){
+        $asientos = DB::table('asientos')
+            ->join('evento_zona', 'asientos.id_zona', '=', 'evento_zona.id')
+            ->join('boleto', 'asientos.id', '=', 'boleto.id_asiento')
+            ->where('evento_zona.id', '=', $idZonaEvento)
+            ->where('boleto.reservado', '=', 0)
+            ->select('asientos.numero','asientos.fila', 'asientos.id')
+            ->distinct()
+            ->get();
+        return response()->json($asientos);
     }
 }
