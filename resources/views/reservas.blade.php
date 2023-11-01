@@ -24,10 +24,10 @@
                                     <div class="col-md">
                                         <div>
                                             <h4 class="fw-bold">{{$event->evento}}</h4>
-                                            <div><i class="mdi mdi-stadium-variant align-bottom me-1"></i> Lugar: Themesbrand
+                                            <div><i class="mdi mdi-stadium-variant align-bottom me-1"></i> Lugar: MULTIEVENTOS POMA, CENTRO DE SAN SALVADOR
                                             </div>
                                             <div><i class="mdi mdi-calendar-clock align-bottom me-1"></i> Fecha: <span
-                                                    class="fw-medium">15 Sep, 2021</span></div>
+                                                    class="fw-medium">{{$event->fecha}}</span></div>
                                         </div>
                                     </div>
                                 </div>
@@ -101,13 +101,30 @@
                                                             @endforeach
                                                         </select>
                                                     </div>
-
-
-
                                                     <div class="col-sm-6">
                                                         <label for="lastName" class="form-label">Cantidad</label>
                                                         <input type="number" class="form-control" id="cantidad"
                                                                placeholder="Cantidad"/>
+                                                    </div>
+                                                    <div class="col-sm-6">
+                                                        <label for="lastName" class="form-label">Zona</label>
+                                                        <select class="form-select mb-3" aria-label="Default select example"
+                                                                name="fila">
+                                                            <option selected>Seleccione la fila</option>
+                                                            @foreach($zonas as $zona)
+                                                                <option value="{{ $zona->id }}">{{ $zona->nombre }} - ${{$zona->precio}}</option>
+                                                            @endforeach
+                                                        </select>
+                                                    </div>
+                                                    <div class="col-sm-6">
+                                                        <label for="lastName" class="form-label">Zona</label>
+                                                        <select class="form-select mb-3" aria-label="Default select example"
+                                                                name="asiento">
+                                                            <option selected>Seleccione la asiento</option>
+                                                            @foreach($zonas as $zona)
+                                                                <option value="{{ $zona->id }}">{{ $zona->nombre }} - ${{$zona->precio}}</option>
+                                                            @endforeach
+                                                        </select>
                                                     </div>
 
                                                 </div>
@@ -117,8 +134,7 @@
                                                 <button type="button"
                                                         class="btn btn-success btn-label right ms-auto nexttab nexttab"
                                                         data-nexttab="v-pills-bill-address-tab"><i
-                                                        class="ri-arrow-right-line label-icon align-middle fs-16 ms-2"></i>Go
-                                                    to Shipping
+                                                        class="ri-arrow-right-line label-icon align-middle fs-16 ms-2"></i>Informacion del usuario
                                                 </button>
                                             </div>
                                         </div>
@@ -334,12 +350,10 @@
     </div>
 @endsection
 @section('script')
-
+    <script src="{{ URL::asset('build/js/pages/form-wizard.init.js') }}"></script>
+    <script src="{{ URL::asset('build/js/app.js') }}"></script>
     <script src="{{ URL::asset('build/libs/nouislider/nouislider.min.js') }}"></script>
     <script src="{{ URL::asset('build/libs/wnumb/wNumb.min.js') }}"></script>
-
     <script src="{{ URL::asset('build/js/pages/apps-nft-explore.init.js') }}"></script>
-
     <script src="{{ URL::asset('build/js/app.js') }}"></script>
-
 @endsection
