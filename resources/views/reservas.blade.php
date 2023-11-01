@@ -62,14 +62,6 @@
                                     </span>
                                         Informacion del usuario
                                     </button>
-                                    <button class="nav-link" id="v-pills-payment-tab" data-bs-toggle="pill"
-                                            data-bs-target="#v-pills-payment" type="button" role="tab"
-                                            aria-controls="v-pills-payment" aria-selected="false">
-                                    <span class="step-title me-2">
-                                        <i class="ri-close-circle-fill step-icon me-2"></i> Paso 3
-                                    </span>
-                                        Pago
-                                    </button>
                                     <button class="nav-link" id="v-pills-finish-tab" data-bs-toggle="pill"
                                             data-bs-target="#v-pills-finish" type="button" role="tab"
                                             aria-controls="v-pills-finish" aria-selected="false">
@@ -169,98 +161,17 @@
                                                     Back to Billing Info
                                                 </button>
                                                 <button type="button"
+                                                        onclick="saveReserva()"
                                                         class="btn btn-success btn-label right ms-auto nexttab nexttab"
-                                                        data-nexttab="v-pills-payment-tab"><i
+                                                        data-nexttab="v-pills-finish-tab"><i
                                                         class="ri-arrow-right-line label-icon align-middle fs-16 ms-2"></i>Go
                                                     to Payment
                                                 </button>
                                             </div>
                                         </div>
                                         <!-- end tab pane -->
-                                        <div class="tab-pane fade" id="v-pills-payment" role="tabpanel"
-                                             aria-labelledby="v-pills-payment-tab">
-                                            <div>
-                                                <h5>Payment</h5>
-                                                <p class="text-muted">Fill all information below</p>
-                                            </div>
-
-                                            <div>
-                                                <div class="my-3">
-                                                    <div class="form-check form-check-inline">
-                                                        <input id="credit" name="paymentMethod" type="radio"
-                                                               class="form-check-input" checked required>
-                                                        <label class="form-check-label" for="credit">Credit card</label>
-                                                    </div>
-                                                    <div class="form-check form-check-inline">
-                                                        <input id="debit" name="paymentMethod" type="radio"
-                                                               class="form-check-input" required>
-                                                        <label class="form-check-label" for="debit">Debit card</label>
-                                                    </div>
-                                                    <div class="form-check form-check-inline">
-                                                        <input id="paypal" name="paymentMethod" type="radio"
-                                                               class="form-check-input" required>
-                                                        <label class="form-check-label" for="paypal">PayPal</label>
-                                                    </div>
-                                                </div>
-
-                                                <div class="row gy-3">
-                                                    <div class="col-md-12">
-                                                        <label for="cc-name" class="form-label">Name on card</label>
-                                                        <input type="text" class="form-control" id="cc-name"
-                                                               placeholder="" required>
-                                                        <small class="text-muted">Full name as displayed on card</small>
-                                                        <div class="invalid-feedback">
-                                                            Name on card is required
-                                                        </div>
-                                                    </div>
-
-                                                    <div class="col-md-6">
-                                                        <label for="cc-number" class="form-label">Credit card
-                                                            number</label>
-                                                        <input type="text" class="form-control" id="cc-number"
-                                                               placeholder="" required>
-                                                        <div class="invalid-feedback">
-                                                            Credit card number is required
-                                                        </div>
-                                                    </div>
-
-                                                    <div class="col-md-3">
-                                                        <label for="cc-expiration" class="form-label">Expiration</label>
-                                                        <input type="text" class="form-control" id="cc-expiration"
-                                                               placeholder="" required>
-                                                        <div class="invalid-feedback">
-                                                            Expiration date required
-                                                        </div>
-                                                    </div>
-
-                                                    <div class="col-md-3">
-                                                        <label for="cc-cvv" class="form-label">CVV</label>
-                                                        <input type="text" class="form-control" id="cc-cvv"
-                                                               placeholder="" required>
-                                                        <div class="invalid-feedback">
-                                                            Security code required
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            <div class="d-flex align-items-start gap-3 mt-4">
-                                                <button type="button" class="btn btn-light btn-label previestab"
-                                                        data-previous="v-pills-bill-address-tab"><i
-                                                        class="ri-arrow-left-line label-icon align-middle fs-16 me-2"></i>
-                                                    Back to Shipping Info
-                                                </button>
-                                                <button type="button"
-                                                        class="btn btn-success btn-label right ms-auto nexttab nexttab"
-                                                        data-nexttab="v-pills-finish-tab"><i
-                                                        class="ri-arrow-right-line label-icon align-middle fs-16 ms-2"></i>
-                                                    Order Complete
-                                                </button>
-                                            </div>
-                                        </div>
-                                        <!-- end tab pane -->
                                         <div class="tab-pane fade" id="v-pills-finish" role="tabpanel"
-                                             aria-labelledby="v-pills-finish-tab">
+                                             aria-labelledby="v-pills-bill-address">
                                             <div class="text-center pt-4 pb-2">
 
                                                 <div class="mb-4">
@@ -285,19 +196,7 @@
                                             class="ri-shopping-cart-fill align-middle me-2"></i> Tu carrito</h5>
                                     <span class="badge bg-danger rounded-pill">3</span>
                                 </div>
-                                <ul class="list-group mb-3">
-                                    <li class="list-group-item d-flex justify-content-between lh-sm">
-                                        <div>
-                                            <h6 class="my-0">Product name</h6>
-                                            <small class="text-muted">Brief description</small>
-                                        </div>
-                                        <span class="text-muted">$12</span>
-                                    </li>
-
-                                    <li class="list-group-item d-flex justify-content-between">
-                                        <span>Total (USD)</span>
-                                        <strong>$20</strong>
-                                    </li>
+                                <ul class="list-group mb-3" id="tabla-carrito">
                                 </ul>
                             </div>
 							<div class="col-lg-3 image-location" id="location-element">
@@ -362,6 +261,12 @@
             const btnFirstStep = document.querySelector("#v-pills-bill-address-tab");
             let reservas = [];
             const modal = new bootstrap.Modal(document.getElementById('myModal'));
+            const zonasJson = @json($zonas);
+
+            function handleFirstStep(e){
+                e.preventDefault();
+                console.log('handleFirstStep()');
+            }
 
             selectLocation.addEventListener("change", async () => {
                 if (selectLocation.value !== "Seleccione la localidad") {
@@ -431,6 +336,7 @@
                 actualizarTabla();
                 modal.hide();
                 selectAsiento.value = "";
+                selectFila.value = "";
             });
 
             async function showModal(){
@@ -473,7 +379,9 @@
                     const accion = fila.insertCell(3);
                     // document.create button
                     const button = document.createElement("button");
-                    button.textContent = "Eliminar";
+                    const iElement = document.createElement("i");
+                    iElement.classList.add("label-icon", "align-middle", "fs-16", "bx", "bxs-trash");
+                    button.appendChild(iElement);
                     button.classList.add("btn", "btn-danger");
                     button.addEventListener("click", () => {
                         const currentReservas = reservas.filter((r) => r.boleto !== reserva.boleto);
@@ -488,13 +396,55 @@
                 }
             }
 
+            function updateCarrito() {
+                const tabla = document.getElementById("tabla-carrito");
+                tabla.innerHTML = "";
+                let total = 0;
+
+                for (const reserva of reservas) {
+                    const currentZona = zonasJson.find((zona) => zona.id === +reserva.zona);
+                    const precio = +currentZona.precio || 0;
+                    total += precio;
+                    const zonaName = currentZona.nombre || reserva.zonaName || "";
+                    const li = document.createElement("li");
+                    li.classList.add("list-group-item", "d-flex", "justify-content-between", "lh-sm");
+                    const div = document.createElement("div");
+                    const h6 = document.createElement("h6");
+                    h6.classList.add("my-0");
+                    h6.textContent = zonaName;
+                    const small = document.createElement("small");
+                    small.classList.add("text-muted");
+                    small.textContent = `${reserva.fila}-${reserva.asiento}`;
+                    div.appendChild(h6);
+                    div.appendChild(small);
+                    const span = document.createElement("span");
+                    span.classList.add("text-muted");
+                    span.textContent = `$${precio}`;
+                    li.appendChild(div);
+                    li.appendChild(span);
+                    tabla.appendChild(li);
+                }
+                const li = document.createElement("li");
+                li.classList.add("list-group-item", "d-flex", "justify-content-between");
+                const span = document.createElement("span");
+                span.textContent = "Total (USD)";
+                const strong = document.createElement("strong");
+                strong.textContent = `$${total}`;
+                li.appendChild(span);
+                li.appendChild(strong);
+                tabla.appendChild(li);
+            }
+
             function guardarInformacion(){
                 if (reservas.length === 0) {
                     errorMaxAsientos.textContent = "Debe seleccionar al menos un asiento";
                     return;
                 }
-                console.log(reservas);
                 btnFirstStep.click();
+                updateCarrito();
+            }
+            function saveReserva(){
+                console.log(reservas);
             }
         </script>
     <script src="{{ URL::asset('build/js/pages/form-wizard.init.js') }}"></script>
