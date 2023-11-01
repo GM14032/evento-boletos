@@ -3,7 +3,7 @@
     Dashboards
 @endsection
 @section('css')
-
+	<link href="{{ URL::asset('style.css') }}" rel="stylesheet" type="text/css" />
 @endsection
 @section('content')
     <div class="row">
@@ -92,41 +92,31 @@
                                             <div>
                                                 <div class="row g-3">
                                                     <div class="col-sm-6">
-                                                        <label for="lastName" class="form-label">Zona</label>
                                                         <select class="form-select mb-3" aria-label="Default select example"
-                                                                name="zona">
+                                                                name="zona" id="select-location-id">
                                                             <option selected>Seleccione la localidad</option>
                                                             @foreach($zonas as $zona)
                                                                 <option value="{{ $zona->id }}">{{ $zona->nombre }} - ${{$zona->precio}}</option>
                                                             @endforeach
                                                         </select>
                                                     </div>
-                                                    <div class="col-sm-6">
-                                                        <label for="lastName" class="form-label">Cantidad</label>
-                                                        <input type="number" class="form-control" id="cantidad"
-                                                               placeholder="Cantidad"/>
-                                                    </div>
-                                                    <div class="col-sm-6">
-                                                        <label for="lastName" class="form-label">Zona</label>
-                                                        <select class="form-select mb-3" aria-label="Default select example"
-                                                                name="fila">
-                                                            <option selected>Seleccione la fila</option>
-                                                            @foreach($zonas as $zona)
-                                                                <option value="{{ $zona->id }}">{{ $zona->nombre }} - ${{$zona->precio}}</option>
-                                                            @endforeach
-                                                        </select>
-                                                    </div>
-                                                    <div class="col-sm-6">
-                                                        <label for="lastName" class="form-label">Zona</label>
-                                                        <select class="form-select mb-3" aria-label="Default select example"
-                                                                name="asiento">
-                                                            <option selected>Seleccione la asiento</option>
-                                                            @foreach($zonas as $zona)
-                                                                <option value="{{ $zona->id }}">{{ $zona->nombre }} - ${{$zona->precio}}</option>
-                                                            @endforeach
-                                                        </select>
-                                                    </div>
 
+                                                    <div class="col-sm-6">
+                                                        <button type="button" class="btn btn-primary " data-bs-toggle="modal" data-bs-target="#myModal"  id="btnAgregarAsiento" disabled>Agregar asiento</button>
+                                                    </div>
+                                                    <div class="col-sm-12">
+                                                        <table id="alternative-pagination" class="table nowrap dt-responsive align-middle table-hover table-bordered" style="width:100%">
+                                                            <thead>
+                                                            <tr>
+                                                                <th>#Boleto</th>
+                                                                <th>Zona</th>
+                                                                <th>Asiento</th>
+                                                            </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
                                                 </div>
                                             </div>
 
@@ -134,7 +124,9 @@
                                                 <button type="button"
                                                         class="btn btn-success btn-label right ms-auto nexttab nexttab"
                                                         data-nexttab="v-pills-bill-address-tab"><i
+
                                                         class="ri-arrow-right-line label-icon align-middle fs-16 ms-2"></i>Informacion del usuario
+
                                                 </button>
                                             </div>
                                         </div>
@@ -142,64 +134,30 @@
                                         <div class="tab-pane fade" id="v-pills-bill-address" role="tabpanel"
                                              aria-labelledby="v-pills-bill-address-tab">
                                             <div>
-                                                <h5>Shipping Address</h5>
-                                                <p class="text-muted">Fill all information below</p>
+                                                <h5>Informacion del usuario</h5>
                                             </div>
 
                                             <div>
                                                 <div class="row g-3">
                                                     <div class="col-12">
-                                                        <label for="address" class="form-label">Address</label>
-                                                        <input type="text" class="form-control" id="address"
-                                                               placeholder="1234 Main St" required>
-                                                        <div class="invalid-feedback">Please enter a address</div>
+                                                        <label for="dui" class="form-label">Dui</label>
+                                                        <input type="text" class="form-control" id="dui"
+                                                               placeholder="05125669-8" required>
+                                                        <div class="invalid-feedback">Por favor ingrese su telefono</div>
                                                     </div>
 
                                                     <div class="col-12">
-                                                        <label for="address2" class="form-label">Address 2 <span
-                                                                class="text-muted">(Optional)</span></label>
-                                                        <input type="text" class="form-control" id="address2"
-                                                               placeholder="Apartment or suite"/>
+                                                        <label for="telefono" class="form-label">Telefono </label>
+                                                        <input type="text" class="form-control" id="telefono"
+                                                               placeholder="7898-6985"/>
                                                     </div>
-
-                                                    <div class="col-md-5">
-                                                        <label for="country" class="form-label">Country</label>
-                                                        <select class="form-select" id="country" required>
-                                                            <option value="">Choose...</option>
-                                                            <option>United States</option>
-                                                        </select>
-                                                        <div class="invalid-feedback">Please select a country</div>
-                                                    </div>
-
-                                                    <div class="col-md-4">
-                                                        <label for="state" class="form-label">State</label>
-                                                        <select class="form-select" id="state">
-                                                            <option value="">Choose...</option>
-                                                            <option>California</option>
-                                                        </select>
-                                                        <div class="invalid-feedback">Please select a state</div>
-                                                    </div>
-
-                                                    <div class="col-md-3">
-                                                        <label for="zip" class="form-label">Zip</label>
-                                                        <input type="text" class="form-control" id="zip"
-                                                               placeholder=""/>
-                                                    </div>
+                                                        <div class="col-12">
+                                                            <label for="email" class="form-label">Email </label>
+                                                            <input type="text" class="form-control" id="email"
+                                                                   placeholder="example@test.com"/>
+                                                        </div>
                                                 </div>
-
                                                 <hr class="my-4 text-muted">
-
-                                                <div class="form-check mb-2">
-                                                    <input type="checkbox" class="form-check-input" id="same-address">
-                                                    <label class="form-check-label" for="same-address">Shipping address
-                                                        is the same as my billing address</label>
-                                                </div>
-
-                                                <div class="form-check">
-                                                    <input type="checkbox" class="form-check-input" id="save-info">
-                                                    <label class="form-check-label" for="save-info">Save this
-                                                        information for next time</label>
-                                                </div>
                                             </div>
                                             <div class="d-flex align-items-start gap-3 mt-4">
                                                 <button type="button" class="btn btn-light btn-label previestab"
@@ -318,7 +276,7 @@
                                 </div>
                             </div>
 
-                            <div class="col-lg-3">
+                            <div class="col-lg-3" id="cart-element" style="display:none;">
                                 <div class="d-flex justify-content-between align-items-center mb-3">
                                     <h5 class="fs-14 text-primary mb-0"><i
                                             class="ri-shopping-cart-fill align-middle me-2"></i> Tu carrito</h5>
@@ -339,21 +297,136 @@
                                     </li>
                                 </ul>
                             </div>
+							<div class="col-lg-3 image-location" id="location-element">
+								<img src="/images/location.jpeg" alt="location">
+                            </div>
                         </div>
                         <!-- end row -->
                     </form>
                 </div>
             </div>
-            <!-- end -->
         </div>
-        <!-- end col -->
     </div>
+<div id="myModal" class="modal fade" tabindex="-1" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="myModalLabel">Agregar asiento</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+
+                                <div class="row g-3">
+                                <div class="col-sm-6">
+                                    <label for="lastName" class="form-label">Fila</label>
+                                    <select class="form-select mb-3" aria-label="Default select example"
+                                            name="fila" id="select-fila-id">
+                                        <option selected>Seleccione la fila</option>
+
+                                    </select>
+                                    </div>
+                                <div class="col-sm-6">
+                                            <label for="lastName" class="form-label">Asiento</label>
+                                            <select class="form-select mb-3" aria-label="Default select example"
+                                                    name="asiento" id="select-asiento-id">
+                                                <option selected>Seleccione el asiento</option>
+
+                                            </select>
+
+                                </div>
+                                </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
+                                <button type="button" class="btn btn-primary" id="modalButton">Save Changes</button>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
 @endsection
 @section('script')
+        <script>const selectLocation = document.querySelector("#select-location-id");
+            const btnAgregarAsiento = document.querySelector("#btnAgregarAsiento");
+            const selectFila = document.querySelector("#select-fila-id");
+            const selectAsiento = document.querySelector("#select-asiento-id");
+            const reservas = [];
+            const modal = new bootstrap.Modal(document.getElementById('myModal'));
+
+            selectLocation.addEventListener("change", async () => {
+                if (selectLocation.value !== "Seleccione la localidad") {
+                    btnAgregarAsiento.removeAttribute("disabled");
+                    const response = await fetch(`/filas/${selectLocation.value}`);
+                    const data = await response.json();
+
+                    selectFila.innerHTML = "<option selected>Seleccione la fila</option>";
+                    data.forEach((fila) => {
+                        const option = document.createElement("option");
+                        option.value = fila.fila;
+                        option.text = fila.fila;
+                        selectFila.appendChild(option);
+                    });
+                } else {
+                    btnAgregarAsiento.setAttribute("disabled", "disabled");
+                }
+            });
+
+            selectFila.addEventListener("change", async () => {
+                const filaSeleccionada = selectFila.value;
+                if (filaSeleccionada !== "Seleccione la fila") {
+                    const zonaSeleccionada = selectLocation.value;
+                    const response = await fetch(`/asientos/${zonaSeleccionada}/${filaSeleccionada}`);
+                    const data = await response.json();
+
+                    selectAsiento.innerHTML = "<option selected>Seleccione el asiento</option>";
+                    data.forEach((asiento) => {
+                        const option = document.createElement("option");
+                        option.value = asiento.id;
+                        option.text = asiento.numero;
+                        selectAsiento.appendChild(option);
+                    });
+                }
+            });
+
+            document.getElementById("modalButton").addEventListener("click", async () => {
+                const zona = selectLocation.options[selectLocation.selectedIndex];
+                const asiento = selectAsiento.options[selectAsiento.selectedIndex];
+
+                reservas.push({
+                    zona: selectLocation.value,
+                    zonaName: zona.textContent,
+                    fila: selectFila.value,
+                    asiento: asiento.textContent,
+                    boleto: selectAsiento.value,
+                });
+
+                actualizarTabla();
+                modal.hide();
+                selectAsiento.innerHTML = "<option selected>Seleccione el asiento</option>";
+            });
+
+            function actualizarTabla() {
+                const tabla = document.getElementById("alternative-pagination").getElementsByTagName('tbody')[0];
+                tabla.innerHTML = "";
+
+                for (const reserva of reservas) {
+                    const fila = tabla.insertRow();
+                    const numero = fila.insertCell(0);
+                    const zona = fila.insertCell(1);
+                    const asiento = fila.insertCell(2);
+
+                    numero.innerHTML = reserva.boleto;
+                    zona.innerHTML = reserva.zonaName;
+                    asiento.innerHTML = `${reserva.fila}-${reserva.asiento}`;
+                }
+            }
+        </script>
     <script src="{{ URL::asset('build/js/pages/form-wizard.init.js') }}"></script>
     <script src="{{ URL::asset('build/js/app.js') }}"></script>
     <script src="{{ URL::asset('build/libs/nouislider/nouislider.min.js') }}"></script>
     <script src="{{ URL::asset('build/libs/wnumb/wNumb.min.js') }}"></script>
     <script src="{{ URL::asset('build/js/pages/apps-nft-explore.init.js') }}"></script>
     <script src="{{ URL::asset('build/js/app.js') }}"></script>
+
+	<script src="{{ URL::asset('scripts/reservas.js') }}"></script>
 @endsection

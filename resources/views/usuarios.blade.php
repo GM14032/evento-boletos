@@ -54,8 +54,6 @@
                                 <a type="button" class="btn btn-sm btn-soft-info" href="{{ route('usuarios.edit', ['id' => $user->id]) }}">
                                  Actualizar
                                 </a>
-
-
                             </td>
                         </tr>
                     @endforeach
@@ -65,6 +63,7 @@
         </div>
     </div>
 </div>
+
 
 @endsection
 @section('script')

@@ -18,6 +18,11 @@ Route::get('/usuarios/{id}', [UsuarioController::class, 'showEdit'])->name('usua
 Route::post('/usuarios/{id}', [UsuarioController::class, 'update'])->name('usuarios.update');
 Route::get('/reservas', [ReservaController::class, 'index'])->name('reservas');
 
+Route::get('/filas/{id}', [ReservaController::class, 'obtenerFila'])->name('filas');
+Route::get('/asientos/{id}/{fila}', [ReservaController::class, 'obtenerAsiento'])->name('asientos');
+Route::get('/asiento-evento/{idEvent}/{idZone}', [ReservaController::class, 'obtenerAsientosPorEventoYZona'])->name('asientosByZone');
+
+
 
 
 Route::get('/', [App\Http\Controllers\HomeController::class, 'root'])->name('home')->middleware('web');

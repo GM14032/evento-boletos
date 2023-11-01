@@ -6,6 +6,8 @@ use App\Models\Evento;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Dompdf\Dompdf;
 use Dompdf\Options;
+use http\Env\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
 use Swift_Message;
@@ -17,12 +19,14 @@ class ReservaController extends Controller
 {
     public function index()
     {
+
         $event = Evento::find(1);
       //  $this->generarQr();
-        $zonas = Evento::join('evento_zona', 'evento.id', '=', 'evento_zona.id_evento')
+        $zonas = DB::table('evento_zona')
             ->join('zonas', 'evento_zona.id_zona', '=', 'zonas.id')
+            ->join('evento', 'evento_zona.id_evento', '=', 'evento.id')
             ->where('evento.id', '=', 1)
-            ->select('zonas.*', 'evento_zona.precio','evento.fecha')
+            ->select('evento_zona.id', 'zonas.nombre', 'evento_zona.precio', 'evento.fecha')
             ->get();
         return view('reservas', compact('event','zonas'));
     }
@@ -66,4 +70,30 @@ class ReservaController extends Controller
        // unlink($pdfPath);
     }
 
+    public function obtenerFila( $idZona){
+        $filas = DB::table('asientos')
+            ->join('evento_zona', 'asientos.id_zona', '=', 'evento_zona.id')
+            ->join('boleto', 'asientos.id', '=', 'boleto.id_asiento')
+            ->where('evento_zona.id', '=', $idZona)
+            ->where('boleto.reservado', '=', 0)
+            ->select('asientos.fila')
+            ->distinct()
+            ->get();
+        return response()->json($filas);
+    }
+    public function obtenerAsiento($idZona,$fila){
+                 $asientos = DB::table('asientos')
+            ->join('evento_zona', 'asientos.id_zona', '=', 'evento_zona.id')
+            ->join('boleto', 'asientos.id', '=', 'boleto.id_asiento')
+            ->where('evento_zona.id', '=', $idZona)
+            ->where('boleto.reservado', '=', 0)
+            ->where('asientos.fila', '=', $fila)
+            ->select('asientos.numero','asientos.id')
+            ->distinct()
+            ->get();
+        return response()->json($asientos);
+    }
+    public function guardarReserva(Request $request){
+
+    }
 }
