@@ -42,6 +42,7 @@
                 </div>
                 <div class="card-body form-steps">
                     <form class="vertical-navs-step">
+                        @csrf
                         <div class="row gy-5">
                             <div class="col-lg-3">
                                 <div class="nav flex-column custom-nav nav-pills" role="tablist"
@@ -482,6 +483,7 @@
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json',
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                         },
                         body: JSON.stringify(bodyReserva),
                     });
@@ -491,6 +493,7 @@
                     window.location.href = "/reservas";
                 } catch (error) {
                     console.error('Error:', error);
+                    console.error('Error:', error.message);
                 }
                 // enable btnGuardarReserva
                 document.getElementById("btnGuardarReserva").removeAttribute("disabled");

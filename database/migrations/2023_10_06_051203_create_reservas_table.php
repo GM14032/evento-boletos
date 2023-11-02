@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('reservas', function (Blueprint $table) {
             $table->integer('id', true);
-            $table->integer('dui');
+            $table->string('dui');
             $table->string('telefono', 10);
             $table->string('email', 100);
             $table->tinyInteger('estado')->default(1);

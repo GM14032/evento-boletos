@@ -1,10 +1,40 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Código QR</title>
+    <title>Códigos QR</title>
 </head>
 <body>
-<h1>Código QR Generado</h1>
-<img src="data:image/png;base64," alt="Código QR">
+@foreach ($reservas as $key => $reserva)
+    <div class="row">
+        <div class="col-sm-4">
+            <div class="horizontal-content imagen">
+                <img src="data:image/png;base64,{{ $qrCodes[$key] }}" alt="Imagen del Evento" width="25%">
+            </div>
+        </div>
+        <div class="col-sm-4">
+            <div class="horizontal-content">
+                <!-- Tabla con datos del evento -->
+                <table>
+                    <tr>
+                        <th>Nombre del Evento</th>
+                        <td>{{$event->evento}}</td>
+                    </tr>
+                    <tr>
+                        <th>Zona y Precio</th>
+                        <td>{{$event->nombre}} - {{$event->precio}}</td>
+                    </tr>
+                    <tr>
+                        <th>Asiento</th>
+                        <td>{{$reserva['fila']}}-{{$reserva['numero']}}</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        <div class="col-sm-4">
+
+        </div>
+    </div>
+@endforeach
 </body>
 </html>
+

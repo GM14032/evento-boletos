@@ -3,10 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\Evento;
+use App\Models\Reserva;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Dompdf\Dompdf;
 use Dompdf\Options;
-use http\Env\Request;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
@@ -19,9 +20,7 @@ class ReservaController extends Controller
 {
     public function index()
     {
-
         $event = Evento::find(1);
-      //  $this->generarQr();
         $zonas = DB::table('evento_zona')
             ->join('zonas', 'evento_zona.id_zona', '=', 'zonas.id')
             ->join('evento', 'evento_zona.id_evento', '=', 'evento.id')
@@ -31,43 +30,35 @@ class ReservaController extends Controller
         return view('reservas', compact('event','zonas'));
     }
 
-    public function generarQr()
+    public function generarQr($request,$evento)
     {
-        $idReserva = 1;
-        $idEvento = 3;
-        $idZona = 1;
-        $idUsuario = 1;
-        $qrContent = json_encode([
-            'id_reserva' => $idReserva,
-            'id_evento' => $idEvento,
-            'id_zona' => $idZona,
-            'id_usuario' => $idUsuario,
-        ]);
-       // $qrCode = QrCode::format('png')->size(200)->generate($qrContent);
-        $qrCode=QrCode::size(100)->generate($qrContent);
+        $event=$evento[0];
 
-        $pdf = PDF::loadView('qr', compact('qrCode'));
-        //$pdf = PDF::loadView('qr');
-    // $pdf->getDomPDF()->getCanvas()->image($qrCodePath, 50, 50, 100, 100);
-       // $pdfPath = public_path('/reserva.pdf');
-        //$pdf->save($pdfPath);
-      /*  Mail::send([], [], function ($message) use ($pdf) {
-            $message->from('fiebre.libros@gmail.com');
-            $message->subject('Asunto del correo');
-            $message->setBody(new TextPart('Este es el cuerpo del correo electrónico en texto simple.'));
-           // $message->attachFromPath($pdf);
-            $message->attachStream($pdf->output(), 'reserva.pdf');
+        $reservas = $request->reservas;
+        $qrCodes = [];
+        foreach ($reservas as $reserva) {
+            $qrContent = json_encode([
+                'dui' => $request['dui'],
+                'id_boleto' => $reserva['id_boleto'],
+                'email' => $request['email'],
+                'telefono' => $request['telefono'],
+                'evento' => $event->evento,
+            ]);
 
-            $message->to('fiebre.libros@gmail.com');
-        });*/
-        Mail::send('qr', [], function ($message) use ($pdf) {
-            $message->to('fiebre.libros@gmail.com')
-                ->subject('Asunto del correo')
-                ->attachData($pdf->output(), 'reserva.pdf');
+            $qrCode = QrCode::size(200)->generate($qrContent);
+            $qrCodes[] = base64_encode($qrCode);
+        }
+        $pdf = PDF::loadView('qr', compact('qrCodes', 'reservas','event'));
+        $pdf->setPaper('A4', 'landscape');
+        $this->enviarEmail($pdf, $request['email']);
+    }
+    public function enviarEmail($pdf, $email)
+    {
+        Mail::send([], [], function ($message) use ($pdf, $email) {
+            $message->to($email)
+                ->subject('Boletos para concierto')
+                ->attachData($pdf->output(), 'reservas.pdf');
         });
-
-        //unlink($qrCodePath);
-       // unlink($pdfPath);
     }
 
     public function obtenerFila( $idZona){
@@ -88,13 +79,37 @@ class ReservaController extends Controller
             ->where('evento_zona.id', '=', $idZona)
             ->where('boleto.reservado', '=', 0)
             ->where('asientos.fila', '=', $fila)
-            ->select('asientos.numero', 'asientos.id')
+            ->select('asientos.numero', 'boleto.id')
             ->distinct()
             ->get();
+
         return response()->json($asientos);
     }
     public function guardarReserva(Request $request){
+        $reservas = $request->reservas;
 
+        $evento= DB::table('evento')
+            ->join('evento_zona', 'evento.id', '=', 'evento_zona.id_evento')
+            ->join('zonas', 'evento_zona.id_zona', '=', 'zonas.id')
+            ->where('evento_zona.id', '=', 1)
+            ->select('evento.evento', 'evento.ruta_imagen', 'zonas.nombre','evento_zona.precio')
+            ->get();
+
+       foreach ($request->reservas as $reservaData) {
+            $reserva = new Reserva();
+            $reserva->dui = $request->dui;
+            $reserva->telefono = $request->telefono;
+            $reserva->email = $request->email;
+            $reserva->id_boleto=$reservaData['id_boleto'];
+            $reserva->leido=0;
+            $reserva->save();
+            DB::table('boleto')
+                ->where('id', '=', $reservaData['id_boleto'])
+                ->update(['reservado' => 1]);
+
+        }
+        $this->generarQr($request,$evento);
+        return response()->json(['message' => 'Reserva creada con éxito'], 201);
     }
 
     public function obtenerAsientoPorZona($idZonaEvento){
