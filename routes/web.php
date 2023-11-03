@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
+use App\Http\Controllers\ReservaController;
 use App\Http\Controllers\UsuarioController;
 use App\Http\Controllers\EventoController;
 use Illuminate\Support\Facades\Route;
@@ -15,6 +16,14 @@ Route::post('/logout', [LoginController::class, 'logout'])->name('logout')->midd
 Route::get('/usuarios', [UsuarioController::class, 'index'])->name('usuarios')->middleware('admin');;
 Route::get('/usuarios/{id}', [UsuarioController::class, 'showEdit'])->name('usuarios.edit');
 Route::post('/usuarios/{id}', [UsuarioController::class, 'update'])->name('usuarios.update');
+
+Route::get('/reservas/{id}', [ReservaController::class, 'index'])->name('reservas');
+Route::get('/filas/{id}', [ReservaController::class, 'obtenerFila'])->name('filas');
+Route::get('/asientos/{id}/{fila}', [ReservaController::class, 'obtenerAsiento'])->name('asientos');
+Route::get('/asiento-evento/{idZonaEvento}', [ReservaController::class, 'obtenerAsientoPorZona'])->name('asientosByZone');
+Route::post('/create/reserva',  [ReservaController::class, 'guardarReserva'])->name('guardarReserva');
+
+
 
 
 Route::get('/', [App\Http\Controllers\HomeController::class, 'root'])->name('home')->middleware('web');

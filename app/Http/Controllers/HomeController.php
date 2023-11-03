@@ -33,8 +33,6 @@ class HomeController extends Controller
 
     public function root()
     {
-
-       // $events = Evento::where('fecha', '>=', date('Y-m-d'))->get();
         $events = Evento::join('evento_zona', 'evento.id', '=', 'evento_zona.id_evento')
             ->join('zonas', 'evento_zona.id_zona', '=', 'zonas.id')
             ->where('evento.fecha', '>=', date('Y-m-d'))
@@ -45,7 +43,6 @@ class HomeController extends Controller
             ->get();
 
         return view('index', compact('events'));
-        //return view('index');
     }
 
     /*Language Translation*/

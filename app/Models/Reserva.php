@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\Model;
 
 /**
  * Class Reserva
- * 
+ *
  * @property int $id
  * @property int $dui
  * @property string $telefono
@@ -18,7 +18,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property int $leido
  * @property int|null $id_usuario
  * @property int $id_boleto
- * 
+ *
  * @property Boleto $boleto
  * @property Usuario|null $usuario
  *
@@ -30,9 +30,11 @@ class Reserva extends Model
 	public $timestamps = false;
 
 	protected $casts = [
-		'dui' => 'int',
+		'dui' => 'string',
 		'estado' => 'int',
 		'leido' => 'int',
+        'telefono' => 'string',
+        'email' => 'string',
 		'id_usuario' => 'int',
 		'id_boleto' => 'int'
 	];
@@ -41,6 +43,7 @@ class Reserva extends Model
 		'dui',
 		'telefono',
 		'estado',
+        'email',
 		'leido',
 		'id_usuario',
 		'id_boleto'
