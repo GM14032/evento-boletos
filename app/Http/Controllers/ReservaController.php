@@ -27,7 +27,6 @@ class ReservaController extends Controller
     public function generarQr($request,$evento)
     {
         $event=$evento[0];
-
         $reservas = $request->reservas;
         $qrCodes = [];
         foreach ($reservas as $reserva) {
@@ -37,6 +36,8 @@ class ReservaController extends Controller
                 'email' => $request['email'],
                 'telefono' => $request['telefono'],
                 'evento' => $event->evento,
+                'fila' => $reserva['fila'],
+                'asiento' => $reserva['numero'],
             ]);
 
             $qrCode = QrCode::size(200)->generate($qrContent);
