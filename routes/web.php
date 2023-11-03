@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
+use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ReservaController;
 use App\Http\Controllers\UsuarioController;
 use App\Http\Controllers\EventoController;
@@ -24,11 +25,8 @@ Route::get('/asiento-evento/{idZonaEvento}', [ReservaController::class, 'obtener
 Route::post('/create/reserva',  [ReservaController::class, 'guardarReserva'])->name('guardarReserva');
 
 
-
-
-Route::get('/', [App\Http\Controllers\HomeController::class, 'root'])->name('home')->middleware('web');
-
-Route::get('{any}', [App\Http\Controllers\HomeController::class, 'index'])->name('index');
+Route::get('/', [HomeController::class, 'root'])->name('home');
+Route::get('{any}', [HomeController::class, 'index'])->name('index');
 
 
 //Rutas para eventos

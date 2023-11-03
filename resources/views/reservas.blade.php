@@ -487,7 +487,8 @@
                     const data = await response.json();
                     console.log('Success:', data);
                     // redirect to /reservas
-                    window.location.href = "/";
+                    window.location.href = window.location.origin;
+
                 } catch (error) {
                     console.error('Error:', error);
                     console.error('Error:', error.message);
