@@ -4,36 +4,29 @@
     <title>Códigos QR</title>
 </head>
 <body>
-@foreach ($reservas as $key => $reserva)
-    <div class="row">
-        <div class="col-sm-4">
-            <div class="horizontal-content imagen">
-                <img src="data:image/png;base64,{{ $qrCodes[$key] }}" alt="Imagen del Evento" width="25%">
+<div style="text-align: center;">
+    @foreach ($reservas as $key => $reserva)
+        <div style="margin-bottom: 32px;">
+            <div style="float: left; margin-right: 32px;">
+                <img src="data:image/png;base64,{{ $qrCodes[$key] }}" style="max-width: 250px; max-height: 250px; object-fit: cover;" alt="qr de la reserva">
             </div>
-        </div>
-        <div class="col-sm-4">
-            <div class="horizontal-content">
-                <table>
-                    <tr>
-                        <th>Nombre del Evento</th>
-                        <td>{{$event->evento}}</td>
-                    </tr>
-                    <tr>
-                        <th>Zona y Precio</th>
-                        <td>{{$event->nombre}} - {{$event->precio}}</td>
-                    </tr>
-                    <tr>
-                        <th>Asiento</th>
-                        <td>{{$reserva['fila']}}-{{$reserva['numero']}}</td>
-                    </tr>
-                </table>
+            <div style="float: left;">
+                <div>
+                    <strong>Nombre del Evento</strong>
+                    <span>{{$event->evento}}</span>
+                </div>
+                <div>
+                    <strong>Zona y Precio</strong>
+                    <span>{{$event->nombre}} - {{$event->precio}}</span>
+                </div>
+                <div>
+                    <strong>Asiento</strong>
+                    <span>{{$reserva['fila']}}-{{$reserva['numero']}}</span>
+                </div>
             </div>
+            <div style="clear: both;"></div>
         </div>
-        <div class="col-sm-4">
-
-        </div>
-    </div>
-@endforeach
+    @endforeach
+</div>
 </body>
 </html>
-
