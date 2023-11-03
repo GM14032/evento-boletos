@@ -17,7 +17,7 @@ Route::get('/usuarios', [UsuarioController::class, 'index'])->name('usuarios')->
 Route::get('/usuarios/{id}', [UsuarioController::class, 'showEdit'])->name('usuarios.edit');
 Route::post('/usuarios/{id}', [UsuarioController::class, 'update'])->name('usuarios.update');
 
-Route::get('/reservas', [ReservaController::class, 'index'])->name('reservas');
+Route::get('/reservas/{id}', [ReservaController::class, 'index'])->name('reservas');
 Route::get('/filas/{id}', [ReservaController::class, 'obtenerFila'])->name('filas');
 Route::get('/asientos/{id}/{fila}', [ReservaController::class, 'obtenerAsiento'])->name('asientos');
 Route::get('/asiento-evento/{idZonaEvento}', [ReservaController::class, 'obtenerAsientoPorZona'])->name('asientosByZone');

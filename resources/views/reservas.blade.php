@@ -262,7 +262,6 @@
             const errorMaxAsientos = document.querySelector("#choose-seats");
             const btnFirstStep = document.querySelector("#v-pills-bill-address-tab");
             let reservas = [];
-            // dui, telefono, email
             const dui = document.querySelector("#dui");
             const telefono = document.querySelector("#telefono");
             const email = document.querySelector("#email");
@@ -280,7 +279,6 @@
                     btnAgregarAsiento.removeAttribute("disabled");
                     const response = await fetch(`/filas/${selectLocation.value}`);
                     const data = await response.json();
-                    // remove all options
                     selectFila.innerHTML = "";
                     const defaultOptions = document.createElement("option");
                     defaultOptions.value = '';
@@ -304,9 +302,9 @@
                     const zonaSeleccionada = selectLocation.value;
                     const response = await fetch(`/asientos/${zonaSeleccionada}/${filaSeleccionada}`);
                     const allSeats = await response.json();
-                    // solo los asientos que no estan en reservas
+
                     const data = allSeats.filter((asiento) => !reservas.some((reserva) => +reserva.boleto === +asiento.id));
-                    // remove all options
+
                     selectAsiento.innerHTML = "";
                     const defaultOption = document.createElement("option");
                     defaultOption.value = '';
@@ -338,7 +336,6 @@
                     asiento: asiento.textContent,
                     boleto: selectAsiento.value,
                 });
-
 
                 actualizarTabla();
                 modal.hide();
@@ -490,7 +487,7 @@
                     const data = await response.json();
                     console.log('Success:', data);
                     // redirect to /reservas
-                    window.location.href = "/reservas";
+                    window.location.href = "/";
                 } catch (error) {
                     console.error('Error:', error);
                     console.error('Error:', error.message);

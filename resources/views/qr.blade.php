@@ -13,7 +13,6 @@
         </div>
         <div class="col-sm-4">
             <div class="horizontal-content">
-                <!-- Tabla con datos del evento -->
                 <table>
                     <tr>
                         <th>Nombre del Evento</th>

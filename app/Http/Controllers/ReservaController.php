@@ -5,22 +5,16 @@ namespace App\Http\Controllers;
 use App\Models\Evento;
 use App\Models\Reserva;
 use Barryvdh\DomPDF\Facade\Pdf;
-use Dompdf\Dompdf;
-use Dompdf\Options;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
-use Swift_Message;
-use Symfony\Component\Mailer\Transport\Smtp\SmtpTransport;
-use Symfony\Component\Mime\Message;
-use Symfony\Component\Mime\Part\TextPart;
 
 class ReservaController extends Controller
 {
-    public function index()
+    public function index($id)
     {
-        $event = Evento::find(1);
+        $event = Evento::find($id);
         $zonas = DB::table('evento_zona')
             ->join('zonas', 'evento_zona.id_zona', '=', 'zonas.id')
             ->join('evento', 'evento_zona.id_evento', '=', 'evento.id')
@@ -91,7 +85,7 @@ class ReservaController extends Controller
         $evento= DB::table('evento')
             ->join('evento_zona', 'evento.id', '=', 'evento_zona.id_evento')
             ->join('zonas', 'evento_zona.id_zona', '=', 'zonas.id')
-            ->where('evento_zona.id', '=', 1)
+            ->where('evento_zona.id', '=', $reservas[0]['id_zona'])
             ->select('evento.evento', 'evento.ruta_imagen', 'zonas.nombre','evento_zona.precio')
             ->get();
 
