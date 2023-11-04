@@ -54,6 +54,9 @@
                             <li class="nav-item">
                                 <a href="eventos.eventos" class="nav-link">Eventos</a>
                             </li>
+                            <li class="nav-item">
+                                <a href="eventos.lecturaBoletos" class="nav-link">Leer Boletos</a>
+                            </li>
 
                         </ul>
                     </div>
