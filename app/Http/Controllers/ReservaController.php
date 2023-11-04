@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\Evento;
-use App\Models\Reserva;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -27,7 +26,6 @@ class ReservaController extends Controller
     public function generarQr($request,$evento)
     {
         $event=$evento[0];
-
         $reservas = $request->reservas;
         $qrCodes = [];
         foreach ($reservas as $reserva) {
@@ -37,6 +35,8 @@ class ReservaController extends Controller
                 'email' => $request['email'],
                 'telefono' => $request['telefono'],
                 'evento' => $event->evento,
+                'fila' => $reserva['fila'],
+                'asiento' => $reserva['numero'],
             ]);
 
             $qrCode = QrCode::size(200)->generate($qrContent);
@@ -89,7 +89,7 @@ class ReservaController extends Controller
             ->select('evento.evento', 'evento.ruta_imagen', 'zonas.nombre','evento_zona.precio')
             ->get();
 
-       foreach ($request->reservas as $reservaData) {
+      /* foreach ($request->reservas as $reservaData) {
             $reserva = new Reserva();
             $reserva->dui = $request->dui;
             $reserva->telefono = $request->telefono;
@@ -101,7 +101,7 @@ class ReservaController extends Controller
                 ->where('id', '=', $reservaData['id_boleto'])
                 ->update(['reservado' => 1]);
 
-        }
+        }*/
         $this->generarQr($request,$evento);
         return response()->json(['message' => 'Reserva creada con éxito'], 201);
     }
@@ -112,7 +112,7 @@ class ReservaController extends Controller
             ->join('boleto', 'asientos.id', '=', 'boleto.id_asiento')
             ->where('evento_zona.id', '=', $idZonaEvento)
             ->where('boleto.reservado', '=', 0)
-            ->select('asientos.numero','asientos.fila', 'asientos.id')
+            ->select('asientos.numero','asientos.fila', 'boleto.id')
             ->distinct()
             ->get();
         return response()->json($asientos);
