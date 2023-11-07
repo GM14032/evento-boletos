@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Evento;
+use App\Models\Reserva;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -89,7 +90,7 @@ class ReservaController extends Controller
             ->select('evento.evento', 'evento.ruta_imagen', 'zonas.nombre','evento_zona.precio')
             ->get();
 
-      /* foreach ($request->reservas as $reservaData) {
+       foreach ($request->reservas as $reservaData) {
             $reserva = new Reserva();
             $reserva->dui = $request->dui;
             $reserva->telefono = $request->telefono;
@@ -101,7 +102,7 @@ class ReservaController extends Controller
                 ->where('id', '=', $reservaData['id_boleto'])
                 ->update(['reservado' => 1]);
 
-        }*/
+        }
         $this->generarQr($request,$evento);
         return response()->json(['message' => 'Reserva creada con éxito'], 201);
     }
