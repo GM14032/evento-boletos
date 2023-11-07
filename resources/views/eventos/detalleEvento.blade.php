@@ -368,14 +368,15 @@
                         $(`#${data[i].numero}`).removeClass('text-danger');
                         $(`#${data[i].numero}`).removeClass('text-success');
                         $(`#${data[i].numero}`).addClass('text-secondary');
-                    }else if(data[i].leido == 1){
-                        $(`#${data[i].numero}`).removeClass('text-secondary');
-                        $(`#${data[i].numero}`).removeClass('text-success');
-                        $(`#${data[i].numero}`).addClass('text-danger');
                     }else{
                         $(`#${data[i].numero}`).removeClass('text-secondary');
                         $(`#${data[i].numero}`).removeClass('text-danger');
                         $(`#${data[i].numero}`).addClass('text-success');
+                    }
+                    if(data[i].leido == 1){
+                        $(`#${data[i].numero}`).removeClass('text-secondary');
+                        $(`#${data[i].numero}`).removeClass('text-success');
+                        $(`#${data[i].numero}`).addClass('text-danger');
                     }
                 }
             }
