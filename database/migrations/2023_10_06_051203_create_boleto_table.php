@@ -18,7 +18,8 @@ return new class extends Migration
             $table->dateTime('fecha');
             $table->integer('id_evento_zona')->index('boleto_evento_id_evento_fk');
             $table->integer('id_asiento')->index('boleto_asiento_id_evento_fk');
-            $table->boolean('estado');
+            $table->boolean('leido');
+            $table->boolean('reservado');
         });
     }
 

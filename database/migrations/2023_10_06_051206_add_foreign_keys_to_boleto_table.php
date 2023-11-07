@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::table('boleto', function (Blueprint $table) {
             $table->foreign(['id_asiento'], 'boleto_asiento_id_evento_fk')->references(['id'])->on('asientos')->onUpdate('NO ACTION')->onDelete('NO ACTION');
-            $table->foreign(['id_evento_zona'], 'boleto_evento_zona_id_evento_fk')->references(['id'])->on('evento_zona')->onUpdate('NO ACTION')->onDelete('NO ACTION');
+            $table->foreign(['id_evento_zona'], 'boleto_evento_id_evento_fk')->references(['id'])->on('evento_zona')->onUpdate('NO ACTION')->onDelete('NO ACTION');
         });
     }
 

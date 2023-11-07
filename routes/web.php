@@ -2,9 +2,13 @@
 
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
+use App\Http\Controllers\HomeController;
+use App\Http\Controllers\ReservaController;
 use App\Http\Controllers\UsuarioController;
 use App\Http\Controllers\EventoController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\AsientoController;
+use App\Http\Controllers\BoletoController;
 
 Route::get('/register', [RegisterController::class, 'showRegistrationForm'])->name('register');
 Route::post('/register', [RegisterController::class, 'store']);
@@ -15,10 +19,15 @@ Route::get('/usuarios', [UsuarioController::class, 'index'])->name('usuarios')->
 Route::get('/usuarios/{id}', [UsuarioController::class, 'showEdit'])->name('usuarios.edit');
 Route::post('/usuarios/{id}', [UsuarioController::class, 'update'])->name('usuarios.update');
 
+Route::get('/reservas/{id}', [ReservaController::class, 'index'])->name('reservas');
+Route::get('/filas/{id}', [ReservaController::class, 'obtenerFila'])->name('filas');
+Route::get('/asientos/{id}/{fila}', [ReservaController::class, 'obtenerAsiento'])->name('asientos');
+Route::get('/asiento-evento/{idZonaEvento}', [ReservaController::class, 'obtenerAsientoPorZona'])->name('asientosByZone');
+Route::post('/create/reserva',  [ReservaController::class, 'guardarReserva'])->name('guardarReserva');
 
-Route::get('/', [App\Http\Controllers\HomeController::class, 'root'])->name('home')->middleware('web');
 
-Route::get('{any}', [App\Http\Controllers\HomeController::class, 'index'])->name('index');
+Route::get('/', [HomeController::class, 'root'])->name('home');
+Route::get('{any}', [HomeController::class, 'index'])->name('index');
 
 
 //Rutas para eventos
@@ -29,3 +38,12 @@ Route::post('mostrar_zonas_formato', [EventoController::class, 'mostrarZonasForm
 Route::post('mostrar_zonas_agregadas', [EventoController::class, 'mostrarZonasFormatosAgregadas'])->name('mostrar_zonas_agregadas');
 Route::post('eliminar_evento_zona', [EventoController::class, 'eliminarEventoZona'])->name('eliminar_evento_zona');
 Route::post('deshabilitar_evento', [EventoController::class, 'deshabilitarEvento'])->name('deshabilitar_evento');
+Route::post('obtener_nombre_evento', [EventoController::class, 'obtener_nombre_evento'])->name('obtener_nombre_evento');
+Route::post('obtener_estados_asientos', [EventoController::class, 'obtenerEstadoAsientos'])->name('obtener_estados_asientos');
+
+//Rutas para asientos
+Route::post('cargar_asientos_vip', [AsientoController::class, 'cargarAsientos'])->name('cargar_asientos_vip');
+
+//Rutas para boletos
+Route::post('verificar_lectura', [BoletoController::class, 'VerificarBoletoLectura'])->name('verificar_lectura');
+Route::post('guardar_lectura', [BoletoController::class, 'guardarLecturaBoleto'])->name('guardar_lectura');

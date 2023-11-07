@@ -228,7 +228,6 @@ function guardarEvento(){
             arreglo_datos_zonas.push({
                 id_zona: arreglo_zonas[i],
                 precio: $('#'+arreglo_zonas[i]).val(),
-                id_zona_formato: $('#'+arreglo_zonas[i]+'_zona_formato').val()
             });
         }
     }
@@ -242,6 +241,7 @@ function guardarEvento(){
     }
 
     formData.append('zonas', JSON.stringify(arreglo_datos_zonas));
+    // formData.append('id_formato', $("#sltFormato").val());
 
     $.ajax({
         type: "POST",
@@ -273,9 +273,9 @@ function guardarEvento(){
     });
 }
 
-function editarEvento(id,evento,fecha,id_formato,estado){
+function editarEvento(id,evento,fecha,id_formato){
     id_evento = id;
-    console.log(id + " " + evento + " " + fecha + " " + id_formato + " " + estado);
+    console.log(id + " " + evento + " " + fecha + " " + id_formato + " ");
     operacion = "actualizar";
     $("#agregar_evento").modal('show');
     $("#detalleFormato").html("");
@@ -284,7 +284,6 @@ function editarEvento(id,evento,fecha,id_formato,estado){
     $("#txtFechaRealizacion").val(fecha);
     $("#txtEvento").val(evento);
     $("#sltFormato").val(id_formato);
-    $("#sltEstado").val(estado);
     mostrarZonas();
 }
 
@@ -343,7 +342,7 @@ function mostrarZonasFormatoAGuardar(){
                         <td>${data[i].nombre}</td>
                         <td>
                             <input type="number" class="form-control" id="${data[i].idz}" min="0.1">
-                            <input type="hidden" class="form-control" id="${data[i].idz}_zona_formato" value="${data[i].idzf}">
+                            <input type="hidden" class="form-control" id="${data[i].idz}_zona_formato" value="${data[i].idz}">
                         </td>
                     </tr>`;
                 }
@@ -490,6 +489,11 @@ function mensajeExito(titulo, texto){
         showConfirmButton: false,
         timer: 3000 // Duración en milisegundos
     });
+}
+
+function reservaciones(idEventos){
+    //abrir una nueva pestana
+    window.open("eventos.detalleEvento?id=" + idEventos, "_blank");
 }
 </script>
 @endsection

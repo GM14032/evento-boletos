@@ -54,11 +54,7 @@ class RegisterController extends Controller
         $data['id_rol'] = $data['id_rol'] ?? 3;
         $validator = new UsuarioValidator();
         $errors = $validator->validate($data);
-
-        if ($errors->count()) {
-            return response()->json($errors, 422);
-        }
-        $usuario = $this->create($data);
+        $usuario = $this->create( new Request($data));
         if (!Auth::check()) {
             Auth::login($usuario);
         }
@@ -89,13 +85,14 @@ class RegisterController extends Controller
      */
     protected function create(Request $data): Usuario
     {
+
          return Usuario::create([
             'nombre' => $data['nombre'],
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
             'dui' => $data['dui'],
             'telefono' => $data['telefono'],
-            'id_rol' => $data['rol_id'],
+            'id_rol' => $data['id_rol'],
         ]);
     }
 }

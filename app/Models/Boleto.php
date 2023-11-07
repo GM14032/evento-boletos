@@ -34,14 +34,16 @@ class Boleto extends Model
 		'fecha' => 'datetime',
 		'id_evento_zona' => 'int',
 		'id_asiento' => 'int',
-		'estado' => 'bool'
+        'reservado' => 'bool',
+		'leido' => 'bool',
 	];
 
 	protected $fillable = [
 		'fecha',
 		'id_evento_zona',
 		'id_asiento',
-		'estado'
+		'reservado',
+        'leido',
 	];
 
 	public function asiento()

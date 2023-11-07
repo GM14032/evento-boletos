@@ -44,6 +44,13 @@ return [
             'throw' => false,
         ],
 
+        'azure' => [
+            'driver' => 'azure',
+            'name' => env('AZURE_STORAGE_ACCOUNT_NAME'),
+            'key' => env('AZURE_STORAGE_ACCOUNT_KEY'),
+            'container' => env('AZURE_STORAGE_ACCOUNT_CONTAINER'),
+            'url' => env('AZURE_STORAGE_ENDPOINT_SUFFIX'),
+        ],
         's3' => [
             'driver' => 's3',
             'key' => env('AWS_ACCESS_KEY_ID'),

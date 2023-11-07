@@ -16,9 +16,8 @@ return new class extends Migration
         Schema::create('evento', function (Blueprint $table) {
             $table->integer('id', true);
             $table->string('evento', 200);
-            $table->date('fecha');
-            $table->integer('capacidad')->nullable();
-            $table->integer('estado');
+            $table->dateTime('fecha');
+            $table->integer('id_formato')->index('evento_formato_id_formato_fk');
             $table->string('ruta_imagen', 200)->nullable();
         });
     }

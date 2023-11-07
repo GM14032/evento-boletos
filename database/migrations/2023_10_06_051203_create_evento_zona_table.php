@@ -15,8 +15,8 @@ return new class extends Migration
     {
         Schema::create('evento_zona', function (Blueprint $table) {
             $table->integer('id', true);
-            $table->integer('id_evento')->index('evento_formato_id_evento_fk');
-            $table->integer('id_zona_formato')->index('evento_formato_id_zona_formato_fk');
+            $table->integer('id_evento')->index('evento_zona_id_evento_fk');
+            $table->integer('id_zona')->index('evento_zona_id_zona_fk');
             $table->decimal('precio', 10, 0);
         });
     }

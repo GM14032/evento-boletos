@@ -16,12 +16,10 @@ use Illuminate\Database\Eloquent\Model;
  * @property int $id
  * @property string $evento
  * @property Carbon $fecha
- * @property int $estado
  * @property string $ruta_imagen
- * @property int|null $id_evento_zona
+ * @property int|null $id_formato
  *
  * @property Collection|Boleto[] $boletos
- * @property Collection|EventoZona[] $evento_zonas
  *
  * @package App\Models
  */
@@ -32,15 +30,13 @@ class Evento extends Model
 
 	protected $casts = [
 		'fecha' => 'datetime',
-		'capacidad' => 'int',
-		'id_evento_zona' => 'int'
+		'id_formato' => 'int'
 	];
 
 	protected $fillable = [
 		'evento',
 		'fecha',
         'ruta_imagen',
-		'estado',
 	];
 
 	public function evento_zonas()

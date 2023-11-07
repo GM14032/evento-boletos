@@ -13,11 +13,10 @@ use Illuminate\Database\Eloquent\Model;
  *
  * @property int $id
  * @property int $id_evento
- * @property int $id_zona_formato
+ * @property int $id_zona
  * @property float $precio
  *
  * @property Evento $evento
- * @property ZonaFormato $zona_formato
  *
  * @package App\Models
  */
@@ -28,13 +27,13 @@ class EventoZona extends Model
 
 	protected $casts = [
 		'id_evento' => 'int',
-		'id_zona_formato' => 'int',
+		'id_zona' => 'int',
 		'precio' => 'float'
 	];
 
 	protected $fillable = [
 		'id_evento',
-		'id_zona_formato',
+		'id_zona',
 		'precio'
 	];
 

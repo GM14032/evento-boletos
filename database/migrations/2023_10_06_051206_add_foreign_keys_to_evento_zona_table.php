@@ -14,8 +14,8 @@ return new class extends Migration
     public function up()
     {
         Schema::table('evento_zona', function (Blueprint $table) {
-            $table->foreign(['id_evento'], 'evento_formato_id_evento_fk')->references(['id'])->on('evento')->onUpdate('NO ACTION')->onDelete('NO ACTION');
-            $table->foreign(['id_zona_formato'], 'evento_formato_id_zona_formato_fk')->references(['id'])->on('zona_formato')->onUpdate('NO ACTION')->onDelete('NO ACTION');
+            $table->foreign(['id_evento'], 'evento_zona_id_evento_fk')->references(['id'])->on('evento')->onUpdate('NO ACTION')->onDelete('NO ACTION');
+            $table->foreign(['id_zona'], 'evento_zona_id_zona_fk')->references(['id'])->on('zonas')->onUpdate('NO ACTION')->onDelete('NO ACTION');
         });
     }
 
@@ -27,8 +27,8 @@ return new class extends Migration
     public function down()
     {
         Schema::table('evento_zona', function (Blueprint $table) {
-            $table->dropForeign('evento_formato_id_evento_fk');
-            $table->dropForeign('evento_formato_id_zona_formato_fk');
+            $table->dropForeign('evento_zona_id_evento_fk');
+            $table->dropForeign('evento_zona_id_zona_fk');
         });
     }
 };
