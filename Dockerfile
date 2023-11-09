@@ -33,6 +33,13 @@ ENV DB_USERNAME=root
 ENV DB_PASSWORD=clMjDWPbbq3ASGc6uner
 ENV APP_ENV=production
 
+ENV MAIL_MAILER=smtp
+ENV MAIL_HOST=smtp.gmail.com
+ENV MAIL_PORT=587
+ENV MAIL_USERNAME=dsi.restaurante15@gmail.com
+ENV MAIL_PASSWORD="rwty asam ttkg yisf"
+ENV MAIL_FROM_ADDRESS="dsi.restaurante15@gmail.com"
+
 # Copy files
 COPY . .
 
