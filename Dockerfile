@@ -39,6 +39,7 @@ ENV MAIL_PORT=587
 ENV MAIL_USERNAME=dsi.restaurante15@gmail.com
 ENV MAIL_PASSWORD="rwty asam ttkg yisf"
 ENV MAIL_FROM_ADDRESS="dsi.restaurante15@gmail.com"
+ENV MAIL_FROM_NAME="VELZON"
 
 # Copy files
 COPY . .
